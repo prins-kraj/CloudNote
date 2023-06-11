@@ -41,12 +41,13 @@ router.post('/createuser',[
           password: secPass,
         })
 
-        // jwt authtoken
+        // jwt data which is user id
         const data = {
           user: {
             id: user.id
           }
         }
+        // jwt authentication token
         const authtoken = jwt.sign(data, JWT_SECRET);
        
         // res.json(user);
@@ -56,6 +57,44 @@ router.post('/createuser',[
       console.log(error.message);
       res.status(500).send("Error Occured");
     }
+})
+
+
+// logina user using : POST "/api/auth/login". Doesn't required login
+router.post('/login',[
+  body('email', 'Invalid email').isEmail(),
+  body('password', 'Invalid password').exists(),
+] , async (req, res)=>{
+  // if there are error , return bad request and the error
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  // retreive email and password for database
+  const {email, password} = req.body;
+  try {
+    let user = await User.findOne({email});  // finding email from collection of email
+    if (!user) {
+      return res.status(400).json({error: "Please enter valid credential"}); // if user not find
+    }
+
+    const passwordCompare = await bcrypt.compare(password, user.password);  // matching the password
+    if (!passwordCompare) {
+      return res.status(400).json({error: "Please enter valid credential"});   // password not matched
+    }
+    const data = {
+      user: {
+        id: user.id
+      }
+    }
+    const authtoken = jwt.sign(data, JWT_SECRET); 
+    res.json({authtoken});
+  } catch (error) {                  // catching error
+    console.log(error.message);
+    res.status(500).send("Server Error Occured");
+    
+  }
 })
 
 module.exports = router;
