@@ -27,7 +27,7 @@ router.post('/addnotes', fetchuser, [
     body('description', 'Description must be 5 character').isLength({ min: 5 }),
 ] , async (req, res)=>{
     try {
-        const {title, description, tag}= req.body;
+        const {title, description, tag}= req.body;     // destructuring kar ke la rha hu ye sab req.body se
         // Finds the validation errors in this request and wraps them in an object with handy functions
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -42,6 +42,32 @@ router.post('/addnotes', fetchuser, [
         console.log(error.message);
         res.status(500).send("Server Error Occured");
     }
+})
+
+// ROUTE 3: 
+// update an existing notes using : PUT "/api/notes/updatenotes/:id". Login required 
+router.put('/updatenotes/:id', fetchuser, async (req, res)=>{
+    const {title, description, tag}= req.body;     // destructuring kar ke la rha hu ye sab req.body se
+
+    // create a newnote object
+    const newNote = {};
+    if(title){newNote.title=title};
+    if(description){newNote.description=description};
+    if(tag){newNote.tag=tag};
+
+    // find the note to be updated and update it 
+    let note =await Notes.findById(req.params.id);
+    if(!note){
+        return res.status(404).send("Not found");
+    }
+
+    // check the user and note related to user
+    if(note.user.toString()!== req.user.id){
+        return res.status(401).send("NOt allowed");
+    }
+
+    note = await Notes.findByIdAndUpdate(req.params.id, {$set: newNote}, {new: true});   // find and update the note
+    res.json({note});
 })
 
 module.exports = router;
