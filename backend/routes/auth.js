@@ -67,6 +67,7 @@ router.post('/login',[
   body('email', 'Invalid email').isEmail(),
   body('password', 'Invalid password').exists(),
 ] , async (req, res)=>{
+  let success =false;
   // if there are error , return bad request and the error
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -78,12 +79,14 @@ router.post('/login',[
   try {
     let user = await User.findOne({email});  // finding email from collection of email
     if (!user) {
+      success = false;
       return res.status(400).json({error: "Please enter valid credential"}); // if user not find
     }
 
     const passwordCompare = await bcrypt.compare(password, user.password);  // matching the password
     if (!passwordCompare) {
-      return res.status(400).json({error: "Please enter valid credential"});   // password not matched
+      success = false;
+      return res.status(400).json({success, error: "Please enter valid credential"});   // password not matched
     }
     const data = {
       user: {
@@ -91,7 +94,8 @@ router.post('/login',[
       }
     }
     const authtoken = jwt.sign(data, JWT_SECRET); 
-    res.json({authtoken});
+    success=true;
+    res.json({success,authtoken});
   } catch (error) {                  // catching error
     console.log(error.message);
     res.status(500).send("Server Error Occured");
