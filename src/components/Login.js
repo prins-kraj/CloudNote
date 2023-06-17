@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
+// import { unstable_HistoryRouter } from 'react-router-dom';  // used by code with harry
+
 
 const Login = () => {
     const [credential, setCredential]=useState({email: "", password: ""});
-    // let history = use
+    // let history = useHistory() // use by code with harry
 
     const handleSubmit = async (e)=>{
         e.preventDefault();
@@ -18,6 +20,7 @@ const Login = () => {
         if (json.success) {
             //save the authtoken and redirect
             localStorage.setItem('token', json.authtoken);
+            // history.push("/");  //used by  code withharry
         }
         else{
             alert("Invalid Credential")
