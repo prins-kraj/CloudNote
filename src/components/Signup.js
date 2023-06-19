@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 // import { unstable_HistoryRouter } from 'react-router-dom';  // used by code with harry
 
-const Signup = () => {
+const Signup = (props) => {
   const [credential, setCredential]=useState({name: "", email: "", password: "", cpassword: ""});
   //  let history = unstable_HistoryRouter  // used by codewith harry 
 
@@ -21,9 +21,10 @@ const Signup = () => {
           //save the authtoken and redirect
           localStorage.setItem('token', json.authtoken);
           // history.push("/");  //used by  code withharry
+          props.showAlert("Account Created Successfully!!", "success");
       }
       else{
-          alert("Invalid Credential")
+          props.showAlert("Invalid Credential", "danger");
       }
   }
 

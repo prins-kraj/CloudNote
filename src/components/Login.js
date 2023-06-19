@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 // import { unstable_HistoryRouter } from 'react-router-dom';  // used by code with harry
 
 
-const Login = () => {
+const Login = (props) => {
     const [credential, setCredential]=useState({email: "", password: ""});
     // let history = useHistory() // use by code with harry
 
@@ -21,9 +21,10 @@ const Login = () => {
             //save the authtoken and redirect
             localStorage.setItem('token', json.authtoken);
             // history.push("/");  //used by  code withharry
+            props.showAlert("LogIn Successfully!!", "success");
         }
         else{
-            alert("Invalid Credential")
+          props.showAlert("Invalid Credential", "danger");
         }
     }
 
@@ -37,7 +38,6 @@ const Login = () => {
         <div className="mb-3">
             <label htmlFor="email" className="form-label">Email address</label>
             <input type="email" className="form-control" value={credential.email} onChange={onChange} id="email" name='email' aria-describedby="emailHelp"/>
-            <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
         </div>
         <div className="mb-3">
             <label htmlFor="password" className="form-label">Password</label>
