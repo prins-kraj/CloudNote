@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 // import { unstable_HistoryRouter } from 'react-router-dom';  // used by code with harry
+import { useNavigate } from 'react-router-dom';
 
 const Signup = (props) => {
   const [credential, setCredential]=useState({name: "", email: "", password: "", cpassword: ""});
-  //  let history = unstable_HistoryRouter  // used by codewith harry 
-
+  //  let history = unstable_HistoryRouter  // used by codewith harry \
+  let navigate = useNavigate();
   const handleSubmit = async (e)=>{
       e.preventDefault();
       const {name, email, password} = credential;
@@ -21,6 +22,7 @@ const Signup = (props) => {
           //save the authtoken and redirect
           localStorage.setItem('token', json.authtoken);
           // history.push("/");  //used by  code withharry
+          navigate("/");
           props.showAlert("Account Created Successfully!!", "success");
       }
       else{
@@ -32,7 +34,8 @@ const Signup = (props) => {
       setCredential({...credential, [e.target.name]: e.target.value})
   }
   return (
-    <div className='container'>
+    <div className='container mt-2'>
+      <h2 className='my-2'>Please SignUp to Use CloudNote</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="name" className="form-label">Name</label>

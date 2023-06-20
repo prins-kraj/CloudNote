@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 // import { unstable_HistoryRouter } from 'react-router-dom';  // used by code with harry
 
 
 const Login = (props) => {
     const [credential, setCredential]=useState({email: "", password: ""});
     // let history = useHistory() // use by code with harry
+    let navigate = useNavigate();
 
     const handleSubmit = async (e)=>{
         e.preventDefault();
@@ -22,6 +24,7 @@ const Login = (props) => {
             localStorage.setItem('token', json.authtoken);
             // history.push("/");  //used by  code withharry
             props.showAlert("LogIn Successfully!!", "success");
+            navigate("/");
         }
         else{
           props.showAlert("Invalid Credential", "danger");
@@ -33,7 +36,8 @@ const Login = (props) => {
     }
 
   return (
-    <div>
+    <div className='mt-2'>
+      <h2 className='my-2'>Please Login to Use CloudNote</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
             <label htmlFor="email" className="form-label">Email address</label>
