@@ -27,11 +27,14 @@ const Navbar = () => {
             <li className="nav-item">
               <Link className={`nav-link ${location.pathname==="/about" ? "active" : ""}`} to="/about">About</Link>
             </li>
+            <li className="nav-item">
+              <Link className={`nav-link ${location.pathname==="/contact" ? "active" : ""}`} to="/contact">Contact</Link>
+            </li>
           </ul>
-          <form className="d-flex mx-2" role="search">
+          {/* <form className="d-flex mx-2" role="search">
             <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
             <button className="btn btn-outline-success" type="submit">Search</button>
-          </form>
+          </form> */}
           {!localStorage.getItem('token')?<form className="d-flex" role="search">
             <Link className="btn btn-primary mx-1" to="/login" role="button">Login</Link>
             <Link className="btn btn-primary mx-1" to="/signUp" role="button">SignUp</Link>

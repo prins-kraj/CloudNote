@@ -36,7 +36,7 @@ const Login = (props) => {
     }
 
   return (
-    <div className='mt-2'>
+    <div className='mt-2 container'>
       <h2 className='my-2'>Please Login to Use CloudNote</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
