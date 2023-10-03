@@ -6,11 +6,13 @@ connectToMongo();
 
 const app = express()
 const port = 5000
+
+app.use(cors())
  
-// Allow requests from 'https://cloud-note-tan.vercel.app'
-app.use(cors({
-  origin: 'https://cloud-note-tan.vercel.app'
-}));
+// // Allow requests from 'https://cloud-note-tan.vercel.app'
+// app.use(cors({
+//   origin: 'https://cloud-note-tan.vercel.app'
+// }));
 
 app.use(express.json());
 
